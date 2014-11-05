@@ -482,6 +482,10 @@ ChatRoom.prototype.showMessages = function(msgs) {
       }
       else
       {
+        var hideWemmoMessage = "";
+        if (message.options !== undefined && (message.options.type === 'call-on' || message.options.type === 'call-off' || message.options.type === 'call-proceed')) {
+          hideWemmoMessage = "style='display:none;'";
+        }
         if (prevUser !== "") {
           out += "          </div>";
           out += "        </div>";
@@ -498,9 +502,12 @@ ChatRoom.prototype.showMessages = function(msgs) {
           out += "      </div>";
           out += "    </div>";
         }
-        if (message.options !== undefined && message.options.type !== 'type-add-team-user' && message.options.type !=='type-remove-team-user'  && message.options.type !=='type-kicked' )
-          out += "    <div class='msRow'>";
-        else out += " <div class='msRow odd'>";
+        if (message.options !== undefined && message.options.type !== 'type-add-team-user' && message.options.type !=='type-remove-team-user'  && message.options.type !=='type-kicked' ) {
+          out += "    <div class='msRow' " + hideWemmoMessage + ">";
+        }
+        else {
+          out += " <div class='msRow odd' " + hideWemmoMessage + ">";
+        }
         out += "        <div class='msMessagesGroup clearfix'>";
         out += "          <div class='msContBox'>";
         out += "            <div class='inner'>";

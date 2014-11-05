@@ -62,6 +62,12 @@ public class NotificationServiceImpl implements org.exoplatform.chat.services.No
 
   public void addNotification(String user, String from, String type, String category, String categoryId,
                               String content, String link, String options) {
+    // Do not set notification for some message type
+    if (options != null && (options.contains("call-on") || options.contains("call-off") || options.contains
+            ("call-proceed"))) {
+      return;
+    }
+
     DBCollection coll = db().getCollection(M_NOTIFICATIONS);
     BasicDBObject doc = new BasicDBObject();
 
