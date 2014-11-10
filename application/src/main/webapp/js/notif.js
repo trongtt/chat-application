@@ -523,8 +523,8 @@ ChatNotification.prototype.attachChatButtonToUserPopup = function() {
   }
 
   $tiptip_content.removeClass("DisabledEvent");
-  $tiptip_content.off("DOMNodeInserted", this.tiptipContentDOMNodeInsertedHandler);
-  $tiptip_content.on('DOMNodeInserted', this.tiptipContentDOMNodeInsertedHandler);
+  $tiptip_content.unbind("DOMNodeInserted", this.tiptipContentDOMNodeInsertedHandler);
+  $tiptip_content.bind('DOMNodeInserted', this.tiptipContentDOMNodeInsertedHandler);
 };
 
 ChatNotification.prototype.attachChatButtonBelowLeftNavigationSpaceName = function() {
