@@ -189,7 +189,7 @@ public class ReportBean {
       }
       addAttendee(user);
       MessageBean messageBean = new MessageBean();
-      messageBean.setDate(date);
+      messageBean.setTimestamp(date);
       messageBean.setFullname(fullname);
       messageBean.setUser(user);
       messageBean.setMessage(msg);
@@ -301,7 +301,7 @@ public class ReportBean {
         xwiki.append("{{div style='padding: 4px;color: #CCC;margin:0;'}}");
         xwiki.append("{{span style='float: left; display: inline-block;padding-right: 10px;'}} [[image:"+serverBase+"/rest/v1/social/users/"+messageBean.getUser()+"/avatar||width='30' height='30']] {{/span}}");
         xwiki.append("{{span style='width: 400px;display: inline-block;vertical-align: top;'}}").append(messageBean.getFullname()).append("{{/span}}");
-        xwiki.append("{{span style='font-size: smaller;vertical-align: top;'}}").append(messageBean.getDate()).append("{{/span}}");
+        xwiki.append("{{span style='font-size: smaller;vertical-align: top;'}}").append(messageBean.getTimestamp()).append("{{/span}}");
         xwiki.append("{{/div}}");
       }
       prevUser = messageBean.getUser();
@@ -420,7 +420,7 @@ public class ReportBean {
         html.append("  <div style='padding: 4px;color: #CCC;'>");
         html.append("    <span style='float: left; display: inline-block;padding-right: 10px;'><img src=\"cid:"+keyAvatar+"\" width='30px' style='width:30px;'></span>");
         html.append("    <span style='width: 300px;display: inline-block;vertical-align: top;'>").append(messageBean.getFullname()).append("</span>");
-        html.append("    <span style='font-size: smaller;vertical-align: top;'>").append(messageBean.getDate()).append("</span>");
+        html.append("    <span style='font-size: smaller;vertical-align: top;'>").append(messageBean.getTimestamp()).append("</span>");
         html.append("  </div>");
         index ++;
       }

@@ -4,7 +4,7 @@ public class MessageBean {
   String user;
   String fullname;
   String message;
-  String date;
+  String timestamp;
 
   public String getUser() {
     return user;
@@ -30,11 +30,11 @@ public class MessageBean {
     this.message = message;
   }
 
-  public String getDate() {
-    return date;
+  public String getTimestamp() {
+    return timestamp;
   }
 
-  public void setDate(String date) {
-    this.date = date;
+  public void setTimestamp(String timestamp) {
+    this.timestamp = timestamp;
   }
 }

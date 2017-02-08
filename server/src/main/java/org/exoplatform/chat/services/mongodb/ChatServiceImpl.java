@@ -26,7 +26,6 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
 import org.exoplatform.chat.listener.ConnectionManager;
@@ -284,7 +283,7 @@ public class ChatServiceImpl implements org.exoplatform.chat.services.ChatServic
       // Just being used as a local cache
       Map<String, UserBean> users = new HashMap<String, UserBean>();
 
-      String timestamp, user, fullname, email, msgId, date;
+      String timestamp, user, fullname, msgId, date;
       boolean first = true;
 
       while (cursor.hasNext())
@@ -311,7 +310,6 @@ public class ChatServiceImpl implements org.exoplatform.chat.services.ChatServic
           users.put(user, userBean);
         }
         fullname = userBean.getFullname();
-        email = userBean.getEmail();
 
         date = "";
         try
@@ -359,8 +357,6 @@ public class ChatServiceImpl implements org.exoplatform.chat.services.ChatServic
           }
           msg.put("user", user);
           msg.put("fullname", fullname);
-          msg.put("email", email);
-          msg.put("date", date);
           msg.put("message", dbo.get("message").toString());
           if (dbo.containsField("options"))
           {
@@ -409,7 +405,7 @@ public class ChatServiceImpl implements org.exoplatform.chat.services.ChatServic
       message = new MessageBean();
       message.setUser(object.get("user").toString());
       message.setMessage(object.get("message").toString());
-      message.setDate(object.get("timestamp").toString());
+      message.setTimestamp(object.get("timestamp").toString());
     }
 
     return message;
