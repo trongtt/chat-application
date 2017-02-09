@@ -109,8 +109,6 @@ public class ReportBean {
       Long timestamp = (Long)message.get("timestamp");
       String user = message.get("user").toString();
       String fullname = message.get("fullname").toString();
-      String email = message.get("email").toString();
-      String date = message.get("date").toString();
       boolean isSystem = false;
       if (message.containsField("isSystem"))
         isSystem = "true".equals(message.get("isSystem").toString());
@@ -189,8 +187,8 @@ public class ReportBean {
       }
       addAttendee(user);
       MessageBean messageBean = new MessageBean();
-      messageBean.setTimestamp(date);
-      messageBean.setFullname(fullname);
+      messageBean.setTimestamp(timestamp);
+      messageBean.setFullName(fullname);
       messageBean.setUser(user);
       messageBean.setMessage(msg);
       addMessage(messageBean);
@@ -419,7 +417,7 @@ public class ReportBean {
         keyAvatar = messageBean.getUser() + index;
         html.append("  <div style='padding: 4px;color: #CCC;'>");
         html.append("    <span style='float: left; display: inline-block;padding-right: 10px;'><img src=\"cid:"+keyAvatar+"\" width='30px' style='width:30px;'></span>");
-        html.append("    <span style='width: 300px;display: inline-block;vertical-align: top;'>").append(messageBean.getFullname()).append("</span>");
+        html.append("    <span style='width: 300px;display: inline-block;vertical-align: top;'>").append(messageBean.getFullName()).append("</span>");
         html.append("    <span style='font-size: smaller;vertical-align: top;'>").append(messageBean.getTimestamp()).append("</span>");
         html.append("  </div>");
         index ++;
