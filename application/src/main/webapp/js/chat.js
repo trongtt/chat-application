@@ -3003,29 +3003,25 @@ ChatApplication.prototype.checkIfMeetingStarted = function (room, callback) {
  */
 ChatApplication.prototype.toggleFavorite = function(targetFav) {
   console.log("FAVORITE::"+targetFav);
-  jqchat.ajax({
-    url: this.jzChatToggleFavorite,
-    data: {"targetUser": targetFav,
-      "user": this.username,
-      "timestamp": new Date().getTime(),
-      "token": this.token
-    },
-    headers: {
-      'Authorization': 'Bearer ' + this.token
-    },
-    context: this,
-    success: function(response){
-      // Update the room and re-render the list of rooms
-      chatApplication.rooms.forEach(function(room, idx) {
-        if(room.user == targetFav) {
-          chatApplication.rooms[idx].isFavorite = chatApplication.rooms[idx].isFavorite == 'true' ? 'false' : 'true';
-          chatApplication.renderRooms();
-          return;
-        }
-      });
-    },
-    error: function(xhr, status, error){
-    }
+
+  var thiss = this;
+  require(['SHARED/commons-cometd3'], function(cCometD) {
+    cCometD.publish('/service/chat', JSON.stringify({"event": "favorite-toggle",
+      "targetUser": targetFav,
+      "sender": thiss.username,
+      "dbName": thiss.dbName
+    }), function(publishAck) {
+      if (publishAck.successful) {
+        console.log("The message reached the server");
+        // Update the room and re-render the list of rooms
+        chatApplication.rooms.forEach(function(room, idx) {
+          if(room.user == targetFav) {
+            chatApplication.rooms[idx].isFavorite = chatApplication.rooms[idx].isFavorite == 'true' ? 'false' : 'true';
+            chatApplication.renderRooms();
+          }
+        });
+      }
+    });
   });
 };
 
