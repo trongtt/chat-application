@@ -40,7 +40,21 @@ public class UserServiceImpl implements UserService {
   private UserDataStorage userStorage;
 
   public void toggleFavorite(String user, String targetUser, String dbName) {
-    userStorage.toggleFavorite(user, targetUser, dbName);
+    if (isFavorite(user, targetUser, dbName)) {
+      removeFavorite(user, targetUser, dbName);
+    } else {
+      addFavorite(user, targetUser, dbName);
+    }
+  }
+
+  @Override
+  public void addFavorite(String user, String room, String dbname) {
+    userStorage.addFavorite(user, room, dbname);
+  }
+
+  @Override
+  public void removeFavorite(String user, String room, String dbName) {
+    userStorage.removeFavorite(user, room, dbName);
   }
 
   /**
