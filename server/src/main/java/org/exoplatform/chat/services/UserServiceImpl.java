@@ -23,7 +23,12 @@ import org.exoplatform.chat.model.NotificationSettingsBean;
 import org.exoplatform.chat.model.RoomBean;
 import org.exoplatform.chat.model.SpaceBean;
 import org.exoplatform.chat.model.UserBean;
+import org.exoplatform.chat.server.CometdService;
+import org.exoplatform.container.PortalContainer;
 import org.json.JSONException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.mortbay.cometd.continuation.EXoContinuationBayeux;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -50,11 +55,31 @@ public class UserServiceImpl implements UserService {
   @Override
   public void addFavorite(String user, String room, String dbname) {
     userStorage.addFavorite(user, room, dbname);
+
+    JSONObject data = new JSONObject();
+    data.put("event", "favorite-added");
+    data.put("room", room);
+
+    EXoContinuationBayeux bayeux = PortalContainer.getInstance().getComponentInstanceOfType(EXoContinuationBayeux.class);
+    // Deliver the saved message to sender's subscribed channel itself.
+    if(bayeux.isPresent(user)) {
+      bayeux.sendMessage(user, CometdService.COMETD_CHANNEL_NAME, data, null);
+    }
   }
 
   @Override
   public void removeFavorite(String user, String room, String dbName) {
     userStorage.removeFavorite(user, room, dbName);
+
+    JSONObject data = new JSONObject();
+    data.put("event", "favorite-removed");
+    data.put("room", room);
+
+    EXoContinuationBayeux bayeux = PortalContainer.getInstance().getComponentInstanceOfType(EXoContinuationBayeux.class);
+    // Deliver the saved message to sender's subscribed channel itself.
+    if(bayeux.isPresent(user)) {
+      bayeux.sendMessage(user, CometdService.COMETD_CHANNEL_NAME, data, null);
+    }
   }
 
   /**

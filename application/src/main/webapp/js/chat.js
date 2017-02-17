@@ -148,6 +148,14 @@ var chatApplication = new ChatApplication();
           if (chatApplication.chatRoom.id === message.room) {
             chatApplication.chatRoom.updateMessage(message.messages[0]);
           }
+        } else if (message.event == 'favorite-added') {
+          var room = chatApplication.rooms({user: message.room});
+          room.update({isFavorite: true});
+          chatApplication.renderRooms();
+        } else if (message.event == 'favorite-removed') {
+          var room = chatApplication.rooms({user: message.room});
+          room.update({isFavorite: false});
+          chatApplication.renderRooms();
         }
       });
     });
@@ -2857,12 +2865,11 @@ ChatApplication.prototype.loadRoom = function() {
       });
     }
 
-    var thiss = this;
     this.chatRoom.init(this.username, this.token, this.targetUser, this.targetFullname, this.isAdmin, this.dbName, function(room) {
-      thiss.room = room;
+      chatApplication.room = room;
       var $msg = jqchat('#msg');
-      thiss.activateRoomButtons();
-      if (thiss.isDesktopView()) $msg.focus();
+      chatApplication.activateRoomButtons();
+      if (chatApplication.isDesktopView()) $msg.focus();
     });
   }
 };
@@ -3005,9 +3012,7 @@ ChatApplication.prototype.toggleFavorite = function(targetFav) {
       "dbName": thiss.dbName
     }), function(publishAck) {
       if (publishAck.successful) {
-        // Update the room and re-render the list of rooms
-        room.update({isFavorite: !room.first().isFavorite});
-        chatApplication.renderRooms();
+        console.log("The message reached the server");
       }
     });
   });
