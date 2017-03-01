@@ -106,7 +106,7 @@ ChatNotification.prototype.initUserProfile = function(callback) {
       if (typeof callback === "function") {
         callback(this.username, fullname);
       }
-
+      //
       // this.notifEventInt = window.clearInterval(this.notifEventInt);
       // this.notifEventInt = setInterval(jqchat.proxy(this.refreshNotif, this), this.chatIntervalNotif);
       // this.refreshNotif();
@@ -920,6 +920,27 @@ var chatNotification = new ChatNotification();
               if(desktopNotification.canShowDesktopNotif()){
                 chatNotification.showDesktopNotif(chatNotification.chatPage, notify);
               }
+            }
+          }
+        } else if (message.event == "notification-count-updated") {
+          // Check if the current page is not Chat applicatino page
+          if (typeof chatApplication === "undefined") {
+            var total = message.data.totalUnreadMsg;
+            chatNotification.oldNotifTotal = total;
+            var $chatNotification = jqchat("#chat-notification");
+            if (total > 0) {
+              if(desktopNotification.canShowOnSiteNotif()) {
+                $chatNotification.html('<span class="notif-total  badgeDefault badgePrimary mini">'+total+'</span>');
+                $chatNotification.css('display', 'block');
+              }
+            } else {
+              $chatNotification.html('<span></span>');
+              $chatNotification.css('display', 'none');
+              var $chatNotificationsDetails = jqchat("#chat-notifications-details");
+              $chatNotificationsDetails.css("display", "none");
+              $chatNotificationsDetails.html('<span class="chat-notification-loading no-user-selection">'+chatBundleData["exoplatform.chat.loading"]+'</span>');
+              $chatNotificationsDetails.parent().removeClass("full-width");
+              $chatNotificationsDetails.next().hide();
             }
           }
         }
